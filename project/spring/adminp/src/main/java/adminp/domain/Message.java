@@ -3,7 +3,7 @@ package adminp.domain;
 import javax.persistence.*;
 
 @Entity
-public class Product {
+public class Message {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
@@ -11,10 +11,10 @@ public class Product {
     private String text;
     private String tag;
 
-    public Product() {
+    public Message() {
     }
 
-    public Product(String text, String tag) {
+    public Message(String text, String tag) {
         this.text = text;
         this.tag = tag;
     }

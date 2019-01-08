@@ -1,7 +1,7 @@
 package adminp.controller;
 
-import adminp.domain.Product;
-import adminp.repos.ProductRepo;
+import adminp.domain.Message;
+import adminp.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import java.util.Map;
 @Controller
 public class MainController {
     @Autowired
-    private ProductRepo productRepo;
+    private MessageRepo messageRepo;
 
     @GetMapping("/")
     public String greeting(Map<String, Object> model) {
@@ -23,9 +23,9 @@ public class MainController {
 
     @GetMapping("/main")
     public String main(Model model) {
-        Iterable<Product> messages = productRepo.findAll();
+        Iterable<Message> messages = messageRepo.findAll();
 
-        messages = productRepo.findAll();
+        messages = messageRepo.findAll();
 
         model.addAttribute("products", messages);
 
@@ -37,11 +37,11 @@ public class MainController {
             @RequestParam String text,
             @RequestParam String tag, Map<String, Object> model
     ) throws IOException {
-        Product product = new Product(text, tag);
+        Message message = new Message(text, tag);
 
-        productRepo.save(product);
+        messageRepo.save(message);
 
-        Iterable<Product> products = productRepo.findAll();
+        Iterable<Message> products = messageRepo.findAll();
 
         model.put("products", products);
 
