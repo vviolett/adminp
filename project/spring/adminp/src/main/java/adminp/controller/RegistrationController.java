@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @Controller
+//регистрация нового пользователя
 public class RegistrationController {
     @Autowired
     private UserRepo userRepo;
