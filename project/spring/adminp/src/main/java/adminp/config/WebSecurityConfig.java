@@ -21,11 +21,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                    //указанные запросы доступны всем пользователям
                     .antMatchers("/", "/registration").permitAll()
+                    //остальные требуют авторизации
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
+                    //мапинг страницы логирования
                     .loginPage("/login")
+                    //доступ предоставляется всем
                     .permitAll()
                 .and()
                     .logout()
