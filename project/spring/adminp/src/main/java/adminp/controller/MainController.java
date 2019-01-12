@@ -1,8 +1,10 @@
 package adminp.controller;
 
 import adminp.domain.Message;
+import adminp.domain.User;
 import adminp.repos.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,28 +24,42 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(Model model) {
+    public String main(Map<String, Object> model) {
         Iterable<Message> messages = messageRepo.findAll();
 
-        messages = messageRepo.findAll();
-
-        model.addAttribute("products", messages);
+        model.put("messages", messages);
 
         return "main";
     }
 
     @PostMapping("/main")
     public String add(
+            @AuthenticationPrincipal User user,
             @RequestParam String text,
             @RequestParam String tag, Map<String, Object> model
-    ) throws IOException {
-        Message message = new Message(text, tag);
+    ) {
+        Message message = new Message(text, tag, user);
 
         messageRepo.save(message);
 
-        Iterable<Message> products = messageRepo.findAll();
+        Iterable<Message> messages = messageRepo.findAll();
 
-        model.put("products", products);
+        model.put("messages", messages);
+
+        return "main";
+    }
+
+    @PostMapping("filter")
+    public String filter(@RequestParam String filter, Map<String, Object> model) {
+        Iterable<Message> messages;
+
+        if (filter != null && !filter.isEmpty()) {
+            messages = messageRepo.findByTag(filter);
+        } else {
+            messages = messageRepo.findAll();
+        }
+
+        model.put("messages", messages);
 
         return "main";
     }
