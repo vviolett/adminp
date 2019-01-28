@@ -3,15 +3,15 @@
 <div class="card-columns">
     <form method="post" enctype="multipart/form-data">
     <div class="card my-3">
-        <#if message.filename??>
-            <img src="/img/${message.filename}" class="card-img-top">
+        <#if task.filename??>
+            <img src="/img/${task.filename}" class="card-img-top">
         </#if>
         <div class="m-2">
-            <span><input type="text" class="form-control" name="text" placeholder=${message.text} /><br/>
-            <i><input type="text" class="form-control" name="tag" placeholder=${message.tag}></i>
+            <span><input type="text" class="form-control" name="text" placeholder=${task.text} /><br/>
+            <i><input type="text" class="form-control" name="tag" placeholder=${task.tag}></i>
         </div>
         <div class="card-footer text-muted">
-        ${message.authorName}
+        ${task.authorName}
         </div>
         <div class="form-group">
             <div class="custom-file">
@@ -20,7 +20,7 @@
             </div>
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
-        <input type="hidden" name="id" value="<#if message??>${message.id}</#if>" />
+        <input type="hidden" name="id" value="<#if task??>${task.id}</#if>" />
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </div>

@@ -1,8 +1,8 @@
 package adminp.controller;
 
-import adminp.domain.Message;
+import adminp.domain.Task;
 import adminp.domain.User;
-import adminp.repos.MessageRepo;
+import adminp.repos.TaskRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +25,7 @@ import java.util.UUID;
 @Controller
 public class MainController {
     @Autowired
-    private MessageRepo messageRepo;
+    private TaskRepo taskRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -37,9 +37,9 @@ public class MainController {
 
     @GetMapping("/main")
     public String main(Model model) {
-        Iterable<Message> messages = messageRepo.findAll();
+        Iterable<Task> tasks = taskRepo.findAll();
 
-        model.addAttribute("messages", messages);
+        model.addAttribute("tasks", tasks);
 
         return "main";
     }
@@ -51,7 +51,7 @@ public class MainController {
             @RequestParam String tag, Map<String, Object> model,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
-        Message message = new Message(text, tag, user);
+        Task task = new Task(text, tag, user);
 
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -65,70 +65,70 @@ public class MainController {
 
             file.transferTo(new File(uploadPath + "/" + resultFilename));
 
-            message.setFilename(resultFilename);
+            task.setFilename(resultFilename);
         }
 
-        messageRepo.save(message);
+        taskRepo.save(task);
 
-        Iterable<Message> messages = messageRepo.findAll();
+        Iterable<Task> tasks = taskRepo.findAll();
 
-        model.put("messages", messages);
+        model.put("tasks", tasks);
 
         return "main";
     }
 
-    @GetMapping("/user-messages/{user}")
-    public String userMessages(
+    @GetMapping("/user-tasks/{user}")
+    public String userTasks(
             @AuthenticationPrincipal User currentUser,
             @PathVariable User user,
             Model model,
-            @RequestParam(required = false) Message message
+            @RequestParam(required = false) Task task
     ) {
-        Set<Message> messages = user.getMessages();
+        Set<Task> tasks = user.getTasks();
 
-        model.addAttribute("messages", messages);
-        model.addAttribute("message", message);
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("task", task);
         model.addAttribute("isCurrentUser", currentUser.equals(user));
 
-        return "userMessages";
+        return "userTasks";
     }
-    @GetMapping("/messages/{messageId}")
-    public String userMessage(
+    @GetMapping("/tasks/{taskId}")
+    public String userTask(
             @AuthenticationPrincipal User currentUser,
-            @PathVariable Integer messageId,
+            @PathVariable Integer taskId,
             Model model
     ) {
 
-        model.addAttribute("message", messageRepo.findById(messageId));
+        model.addAttribute("task", taskRepo.findById(taskId));
 
-        return "parts/messageForm";
+        return "parts/taskForm";
     }
 
-    @PostMapping("/messages/{messageId}")
-    public String updateMessage(
+    @PostMapping("/tasks/{taskId}")
+    public String updateTask(
             @AuthenticationPrincipal User currentUser,
-            @RequestParam("id") Integer messageId,
+            @RequestParam("id") Integer taskId,
             @RequestParam("text") String text,
             @RequestParam("tag") String tag,
             @RequestParam("file") MultipartFile file
     ) throws IOException {
-        Message message = messageRepo.findById(messageId);
+        Task task = taskRepo.findById(taskId);
             if (!StringUtils.isEmpty(text)) {
-                message.setText(text);
+                task.setText(text);
             }
 
             if (!StringUtils.isEmpty(tag)) {
-                message.setTag(tag);
+                task.setTag(tag);
             }
 
-            saveFile(message, file);
+            saveFile(task, file);
 
-            messageRepo.save(message);
+            taskRepo.save(task);
 
-        return "redirect:/messages/" + message.getId();
+        return "redirect:/tasks/" + task.getId();
     }
 
-    private void saveFile(@Valid Message message, @RequestParam("file") MultipartFile file) throws IOException {
+    private void saveFile(@Valid Task task, @RequestParam("file") MultipartFile file) throws IOException {
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
 
@@ -141,7 +141,7 @@ public class MainController {
 
             file.transferTo(new File(uploadPath + "/" + resultFilename));
 
-            message.setFilename(resultFilename);
+            task.setFilename(resultFilename);
         }
     }
 }

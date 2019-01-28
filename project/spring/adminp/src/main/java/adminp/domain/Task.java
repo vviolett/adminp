@@ -3,7 +3,7 @@ package adminp.domain;
 import javax.persistence.*;
 
 @Entity
-public class Message {
+public class Task {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
@@ -17,10 +17,10 @@ public class Message {
 
     private String filename;
 
-    public Message() {
+    public Task() {
     }
 
-    public Message(String text, String tag, User user) {
+    public Task(String text, String tag, User user) {
         this.text = text;
         this.tag = tag;
         this.author = user;

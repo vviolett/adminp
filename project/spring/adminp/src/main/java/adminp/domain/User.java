@@ -27,7 +27,7 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Message> messages;
+    private Set<Task> tasks;
 
     @Override
     public boolean equals(Object o) {
@@ -120,12 +120,12 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public Set<Message> getMessages() {
-        return messages;
+    public Set<Task> getTasks() {
+        return tasks;
     }
 
-    public void setMessages(Set<Message> messages) {
-        this.messages = messages;
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public String getActivationCode() {

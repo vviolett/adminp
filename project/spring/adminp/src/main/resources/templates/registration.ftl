@@ -3,6 +3,6 @@
 
 <@c.page>
 Add new user
-${message?ifExists}
+${task?ifExists}
     <@l.login "/registration" true/>
 </@c.page>

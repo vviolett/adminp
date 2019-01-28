@@ -1,5 +1,5 @@
 <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Add new Message
+    Add new Task
 </a>
 <div class="collapse" id="collapseExample">
     <div class="form-group mt-3">

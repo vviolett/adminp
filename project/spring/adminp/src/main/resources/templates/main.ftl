@@ -3,7 +3,7 @@
 <@c.page>
 
 
-    <#include "parts/messageEdit.ftl" />
+    <#include "parts/taskEdit.ftl" />
 
-    <#include "parts/messageList.ftl" />
+    <#include "parts/taskList.ftl" />
 </@c.page>

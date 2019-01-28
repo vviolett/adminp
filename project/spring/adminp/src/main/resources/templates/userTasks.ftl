@@ -2,8 +2,8 @@
 
 <@c.page>
     <#if isCurrentUser>
-        <#include "parts/messageEdit.ftl" />
+        <#include "parts/taskEdit.ftl" />
     </#if>
 
-    <#include "parts/messageList.ftl" />
+    <#include "parts/taskList.ftl" />
 </@c.page>
