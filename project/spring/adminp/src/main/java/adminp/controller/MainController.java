@@ -9,10 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -110,20 +107,28 @@ public class MainController {
             @RequestParam("id") Integer taskId,
             @RequestParam("text") String text,
             @RequestParam("tag") String tag,
-            @RequestParam("file") MultipartFile file
+            @RequestParam("file") MultipartFile file,
+            @RequestParam(required=false , value = "save") String saveFlag,
+            @RequestParam(required=false , value = "delete") String deleteFlag
     ) throws IOException {
         Task task = taskRepo.findById(taskId);
-            if (!StringUtils.isEmpty(text)) {
-                task.setText(text);
+
+            if(saveFlag != null) {
+                if (!StringUtils.isEmpty(text)) {
+                    task.setText(text);
+                }
+
+                if (!StringUtils.isEmpty(tag)) {
+                    task.setTag(tag);
+                }
+
+                saveFile(task, file);
+
+                taskRepo.save(task);
+            } else if(deleteFlag != null){
+                taskRepo.delete(task);
+                return "redirect:/main";
             }
-
-            if (!StringUtils.isEmpty(tag)) {
-                task.setTag(tag);
-            }
-
-            saveFile(task, file);
-
-            taskRepo.save(task);
 
         return "redirect:/tasks/" + task.getId();
     }

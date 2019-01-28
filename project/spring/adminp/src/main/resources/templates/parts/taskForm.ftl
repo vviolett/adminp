@@ -22,7 +22,8 @@
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <input type="hidden" name="id" value="<#if task??>${task.id}</#if>" />
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <input name="save" value="save" type="submit" class="btn btn-primary"/>
+            <input name="delete" value="delete" type="submit" class="btn btn-primary"/>
         </div>
     </div>
     </form>
