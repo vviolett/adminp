@@ -9,6 +9,9 @@
         <div class="m-2">
             <span>${task.text}</span><br/>
             <i>${task.tag}</i>
+    <#if task.date??>
+            <i>${task.date}</i>
+    </#if>
         </div>
         <div class="card-footer text-muted">
             ${task.authorName}

@@ -5,6 +5,10 @@
     <div class="form-group mt-3">
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
+                <input type="text" class="form-control" name="datepicker" id="datepicker" width="276" />
+            </div>
+
+            <div class="form-group">
                 <input type="text" class="form-control" name="text" placeholder="Введите сообщение" />
             </div>
             <div class="form-group">

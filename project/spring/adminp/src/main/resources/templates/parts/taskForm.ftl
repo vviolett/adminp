@@ -8,7 +8,12 @@
         </#if>
         <div class="m-2">
             <span><input type="text" class="form-control" name="text" placeholder=${task.text} /><br/>
-            <i><input type="text" class="form-control" name="tag" placeholder=${task.tag}></i>
+            <i><input type="text" class="form-control" name="tag" placeholder=${task.tag}></i> <br/>
+
+                    <#if task.date??>
+                        <i><input type="text" class="form-control" name="datepicker" id="datepicker" width="276" placeholder=${task.date}/></i>
+                    </#if>
+
         </div>
         <div class="card-footer text-muted">
         ${task.authorName}

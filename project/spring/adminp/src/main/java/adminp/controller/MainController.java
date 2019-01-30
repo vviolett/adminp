@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -45,10 +47,14 @@ public class MainController {
     public String add(
             @AuthenticationPrincipal User user,
             @RequestParam String text,
-            @RequestParam String tag, Map<String, Object> model,
-            @RequestParam("file") MultipartFile file
+            @RequestParam String tag,
+            @RequestParam(name = "datepicker", required = false) String datepicker,
+             Map<String, Object> model,
+            @RequestParam(name = "file", required=false) MultipartFile file
     ) throws IOException {
-        Task task = new Task(text, tag, user);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(datepicker, formatter);
+        Task task = new Task(text, tag, user, date);
 
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -107,6 +113,7 @@ public class MainController {
             @RequestParam("id") Integer taskId,
             @RequestParam("text") String text,
             @RequestParam("tag") String tag,
+            @RequestParam(name = "datepicker", required = false) String datepicker,
             @RequestParam("file") MultipartFile file,
             @RequestParam(required=false , value = "save") String saveFlag,
             @RequestParam(required=false , value = "delete") String deleteFlag
@@ -120,6 +127,11 @@ public class MainController {
 
                 if (!StringUtils.isEmpty(tag)) {
                     task.setTag(tag);
+                }
+                if (!StringUtils.isEmpty(datepicker)) {
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                    LocalDate date = LocalDate.parse(datepicker, formatter);
+                    task.setDate(date);
                 }
 
                 saveFile(task, file);
