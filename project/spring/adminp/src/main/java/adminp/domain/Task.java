@@ -11,6 +11,9 @@ public class Task {
 
     private String text;
     private String tag;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "executor_id")
+    private User executor;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -23,11 +26,20 @@ public class Task {
     public Task() {
     }
 
-    public Task(String text, String tag, User user, LocalDate date) {
+    public Task(String text, String tag, User user, LocalDate date, User executor) {
         this.text = text;
         this.tag = tag;
         this.author = user;
         this.date = date;
+        this.executor = executor;
+    }
+
+    public User getExecutor() {
+        return executor;
+    }
+
+    public void setExecutor(User executor) {
+        this.executor = executor;
     }
 
     public LocalDate getDate() {

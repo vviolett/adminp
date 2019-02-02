@@ -12,6 +12,9 @@
     <#if task.date??>
             <i>${task.date}</i>
     </#if>
+            <#if task.executor??>
+                <i>${task.executor.username}</i>
+            </#if>
         </div>
         <div class="card-footer text-muted">
             ${task.authorName}

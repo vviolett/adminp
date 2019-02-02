@@ -3,6 +3,7 @@ package adminp.controller;
 import adminp.domain.Task;
 import adminp.domain.User;
 import adminp.repos.TaskRepo;
+import adminp.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +26,8 @@ import java.util.UUID;
 public class MainController {
     @Autowired
     private TaskRepo taskRepo;
+    @Autowired
+    private UserRepo userRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -39,6 +42,7 @@ public class MainController {
         Iterable<Task> tasks = taskRepo.findAll();
 
         model.addAttribute("tasks", tasks);
+        model.addAttribute("users", userRepo.findAll());
 
         return "main";
     }
@@ -48,13 +52,17 @@ public class MainController {
             @AuthenticationPrincipal User user,
             @RequestParam String text,
             @RequestParam String tag,
+            @RequestParam(name = "executor", required = false) Long executor,
             @RequestParam(name = "datepicker", required = false) String datepicker,
              Map<String, Object> model,
             @RequestParam(name = "file", required=false) MultipartFile file
     ) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate date = LocalDate.parse(datepicker, formatter);
-        Task task = new Task(text, tag, user, date);
+
+        User ex = userRepo.getOne(executor);
+
+        Task task = new Task(text, tag, user, date, ex);
 
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -103,6 +111,7 @@ public class MainController {
     ) {
 
         model.addAttribute("task", taskRepo.findById(taskId));
+        model.addAttribute("users", userRepo.findAll());
 
         return "parts/taskForm";
     }
@@ -113,6 +122,7 @@ public class MainController {
             @RequestParam("id") Integer taskId,
             @RequestParam("text") String text,
             @RequestParam("tag") String tag,
+            @RequestParam(name = "executor", required = false) Long executor,
             @RequestParam(name = "datepicker", required = false) String datepicker,
             @RequestParam("file") MultipartFile file,
             @RequestParam(required=false , value = "save") String saveFlag,
@@ -132,6 +142,10 @@ public class MainController {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
                     LocalDate date = LocalDate.parse(datepicker, formatter);
                     task.setDate(date);
+                }
+                if (!StringUtils.isEmpty(executor)) {
+                    User ex = userRepo.getOne(executor);
+                    task.setExecutor(ex);
                 }
 
                 saveFile(task, file);
