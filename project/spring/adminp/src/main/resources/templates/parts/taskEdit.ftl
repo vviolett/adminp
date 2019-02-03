@@ -9,10 +9,10 @@
             </div>
 
             <div class="form-group">
-                <input type="text" class="form-control" name="text" placeholder="Введите сообщение" />
+                <input type="text" class="form-control" name="tag" placeholder="Тэг">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" name="tag" placeholder="Тэг">
+                <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Введите сообщение"></textarea>
             </div>
             <div class="form-group">
                 <div class="custom-file">

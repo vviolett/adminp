@@ -175,4 +175,26 @@ public class MainController {
             task.setFilename(resultFilename);
         }
     }
+    @PostMapping("/tasks/addComment")
+    public String updateTas(
+            @AuthenticationPrincipal User currentUser,
+            @RequestParam("id") Integer taskId,
+            @RequestParam("text") String text,
+            @RequestParam(required=false , value = "save") String saveFlag,
+            @RequestParam(required=false , value = "delete") String deleteFlag
+    ) throws IOException {
+        Task task = taskRepo.findById(taskId);
+
+        if(saveFlag != null) {
+            if (!StringUtils.isEmpty(text)) {
+                task.setText(text);
+            }
+            taskRepo.save(task);
+        } else if(deleteFlag != null){
+            taskRepo.delete(task);
+            return "redirect:/main";
+        }
+
+        return "redirect:/tasks/" + task.getId();
+    }
 }
