@@ -2,6 +2,7 @@ package adminp.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 public class Task {
@@ -19,6 +20,9 @@ public class Task {
     @JoinColumn(name = "user_id")
     private User author;
 
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Comment> comments;
+
     private LocalDate date;
 
     private String filename;
@@ -32,6 +36,14 @@ public class Task {
         this.author = user;
         this.date = date;
         this.executor = executor;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
     }
 
     public User getExecutor() {

@@ -1,7 +1,9 @@
 package adminp.controller;
 
+import adminp.domain.Comment;
 import adminp.domain.Task;
 import adminp.domain.User;
+import adminp.repos.CommentRepo;
 import adminp.repos.TaskRepo;
 import adminp.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,8 @@ public class MainController {
     private TaskRepo taskRepo;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private CommentRepo commentRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -184,11 +188,12 @@ public class MainController {
             @RequestParam(required=false , value = "delete") String deleteFlag
     ) throws IOException {
         Task task = taskRepo.findById(taskId);
+        Comment comment = new Comment(text, task);
+
+        task.getComments().add(comment);
+        commentRepo.save(comment);
 
         if(saveFlag != null) {
-            if (!StringUtils.isEmpty(text)) {
-                task.setText(text);
-            }
             taskRepo.save(task);
         } else if(deleteFlag != null){
             taskRepo.delete(task);
