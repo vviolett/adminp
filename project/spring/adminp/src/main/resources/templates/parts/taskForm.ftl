@@ -77,8 +77,11 @@
 </tbody>
 <form method="post" action="addComment" enctype="multipart/form-data">
     <div class="card my-3">
-        <div class="m-2">
-            <span><div class="form-group">
+        <div class="row">
+            <div class="col-1">
+                <img src="https://downloader.disk.yandex.ru/disk/e9cc5d64a693a87438cd9c815efbce64a03a0c88a385e3e1b7b5292e5528c94a/5c5f69af/9Ks_sHpv0WTyny6h8Wn7svl0zQQIoe8w_Jinxb69C7cna8j9elmoypERXg7p_NdyksF9OZo4AzufWMB9N3BHFA%3D%3D?uid=0&filename=man.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&fsize=1973&hid=6ee2a01e27939c30598967c21feb1ddf&media_type=image&tknv=v2&etag=34f3713ab4585e9e66dbf8ad9b7258cb">
+            </div>
+            <div class="col-10">
                 <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"
                           placeholder="Введите ваш комментарий"></textarea>
             </div>
