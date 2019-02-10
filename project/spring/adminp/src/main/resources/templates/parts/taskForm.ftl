@@ -21,7 +21,7 @@
                         <#if task.date??>
                             <i><input type="text" class="form-control" name="datepicker" id="datepicker"
                                       width="276"
-                                      placeholder=${task.date}/></i><br/>
+                                      placeholder=${task.date}></i><br/>
                         </#if>
                         <#if task.executor??>
                             <select name="executor" class="form-control">
@@ -38,7 +38,7 @@
             </div>
             <div class="m-2">
                 <div class="form-group">
-                    <i><input type="text" class="form-control" name="tag" placeholder=${task.tag}/></i><br/>
+                    <i><input type="text" class="form-control" name="tag" placeholder=${task.tag}></i><br/>
                     <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"
                               placeholder=${task.text}></textarea><br/>
                     <div class="custom-file">
@@ -65,10 +65,16 @@
 <tr>
     <td><#list task.comments as comment>
         <div class="row">
-            <div class="col-1">
-                <img src="https://downloader.disk.yandex.ru/disk/e9cc5d64a693a87438cd9c815efbce64a03a0c88a385e3e1b7b5292e5528c94a/5c5f69af/9Ks_sHpv0WTyny6h8Wn7svl0zQQIoe8w_Jinxb69C7cna8j9elmoypERXg7p_NdyksF9OZo4AzufWMB9N3BHFA%3D%3D?uid=0&filename=man.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&fsize=1973&hid=6ee2a01e27939c30598967c21feb1ddf&media_type=image&tknv=v2&etag=34f3713ab4585e9e66dbf8ad9b7258cb">
+            <div class="col-1" style="text-align: center;">
+                <img src="/img/man.png">
+                <#if comment.author??>
+                ${comment.author.username}
+                </#if>
             </div>
             <div class="col-10">
+                <#if comment.date??>
+                ${comment.date}
+                </#if>
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3">${comment.text}</textarea><br/>
             </div>
         </div>
@@ -76,24 +82,20 @@
 </tr>
 </tbody>
 <form method="post" action="addComment" enctype="multipart/form-data">
-    <div class="card my-3">
-        <div class="row">
-            <div class="col-1">
-                <img src="https://downloader.disk.yandex.ru/disk/e9cc5d64a693a87438cd9c815efbce64a03a0c88a385e3e1b7b5292e5528c94a/5c5f69af/9Ks_sHpv0WTyny6h8Wn7svl0zQQIoe8w_Jinxb69C7cna8j9elmoypERXg7p_NdyksF9OZo4AzufWMB9N3BHFA%3D%3D?uid=0&filename=man.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&fsize=1973&hid=6ee2a01e27939c30598967c21feb1ddf&media_type=image&tknv=v2&etag=34f3713ab4585e9e66dbf8ad9b7258cb">
-            </div>
-            <div class="col-10">
-                <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"
-                          placeholder="Введите ваш комментарий"></textarea>
-            </div>
-        </div>
-        <div class="card-footer text-muted">
+    <div class="row">
+        <div class="col-1" style="text-align: center;">
+            <img src="/img/man.png">
         ${task.authorName}
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <input type="hidden" name="id" value="<#if task??>${task.id}</#if>"/>
-            <div class="form-group">
+        </div>
+        <div class="col-10">
+                <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"
+                          placeholder="Введите ваш комментарий"></textarea><br/>
+            <div class="text-right">
                 <input name="save" value="save" type="submit" class="btn btn-success"/>
             </div>
         </div>
     </div>
+    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+    <input type="hidden" name="id" value="<#if task??>${task.id}</#if>"/>
 </form>
 </@c.page>

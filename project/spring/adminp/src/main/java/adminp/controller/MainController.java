@@ -188,7 +188,8 @@ public class MainController {
             @RequestParam(required=false , value = "delete") String deleteFlag
     ) throws IOException {
         Task task = taskRepo.findById(taskId);
-        Comment comment = new Comment(text, task);
+        LocalDate date = LocalDate.now();
+        Comment comment = new Comment(text, task, currentUser, date);
 
         task.getComments().add(comment);
         commentRepo.save(comment);

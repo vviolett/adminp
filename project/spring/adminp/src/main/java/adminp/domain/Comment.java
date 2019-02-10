@@ -1,6 +1,7 @@
 package adminp.domain;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Comment {
@@ -14,12 +15,36 @@ public class Comment {
     @JoinColumn(name = "task_id")
     private Task task;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
+
+    private LocalDate date;
+
     public Comment() {
     }
 
-    public Comment(String text, Task task) {
+    public Comment(String text, Task task, User author, LocalDate date) {
         this.text = text;
         this.task = task;
+        this.author = author;
+        this.date = date;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public Integer getId() {
