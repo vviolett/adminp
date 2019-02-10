@@ -1,9 +1,6 @@
 <#import "common.ftl" as c>
 <@c.page>
     <form method="post" enctype="multipart/form-data">
-        <div class="controls">
-            <p class="form-control-static">Lorem Ipsum and then some</p>
-        </div>
         <div class="card">
             <div class="card-header">
                 ProjName
