@@ -1,13 +1,14 @@
 <#import "common.ftl" as c>
 <@c.page>
-<div class="card-columns" xmlns="http://www.w3.org/1999/html">
     <form method="post" enctype="multipart/form-data">
-        <div class="card" style="width: 62rem;">
+        <div class="controls">
+            <p class="form-control-static">Lorem Ipsum and then some</p>
+        </div>
+        <div class="card">
             <div class="card-header">
                 ProjName
             </div>
             <br/>
-
             <div class="container">
                 <div class="row">
                     <div class="col-6">
@@ -17,14 +18,16 @@
                     </div>
                     <div class="col-2">
                     </div>
-                    <div class="col-4">
+                    <div class="col-4" style="text-align: left;">
+                        Date
                         <#if task.date??>
                             <i><input type="text" class="form-control" name="datepicker" id="datepicker"
                                       width="276"
                                       placeholder=${task.date}></i><br/>
                         </#if>
+                        Executor
                         <#if task.executor??>
-                            <select name="executor" class="form-control">
+                            <select name="executor" class="form-control" style="width: 280px;">
                                 <option value="" disabled selected>${task.executor.username}</option>
                                 <#if users??>
                                     <#list users as user>
@@ -36,9 +39,9 @@
                     </div>
                 </div>
             </div>
-            <div class="m-2">
+            <div class="m-2" style="text-align: left;">
                 <div class="form-group">
-                    <i><input type="text" class="form-control" name="tag" placeholder=${task.tag}></i><br/>
+                    <br/><i><input type="text" class="form-control" name="tag" placeholder=${task.tag}></i><br/>
                     <textarea name="text" class="form-control" id="exampleFormControlTextarea1" rows="3"
                               placeholder=${task.text}></textarea><br/>
                     <div class="custom-file">
@@ -60,7 +63,7 @@
             </div>
         </div>
     </form>
-</div>
+<br/>
 <tbody>
 <tr>
     <td><#list task.comments as comment>
