@@ -42,11 +42,18 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(Model model) {
+    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Task> tasks = taskRepo.findAll();
+
+        if (filter != null && !filter.isEmpty()) {
+            tasks = taskRepo.findByTag(filter);
+        } else {
+            tasks = taskRepo.findAll();
+        }
 
         model.addAttribute("tasks", tasks);
         model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("filter", filter);
 
         return "main";
     }

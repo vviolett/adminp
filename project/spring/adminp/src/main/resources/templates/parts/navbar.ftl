@@ -12,19 +12,26 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
             </li>
-            <#if user ??>
+        <#if user ??>
             <li class="nav-item">
                 <a class="nav-link" href="/main">Tasks</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/user-tasks/${currentUserId}">My tasks</a>
             </li>
-            </#if>
-            <#if isAdmin>
+        </#if>
+        <#if isAdmin>
             <li class="nav-item">
                 <a class="nav-link" href="/user">User list</a>
             </li>
-            </#if>
+        </#if>
+        <#if springMacroRequestContext.requestUri?contains("/main")>
+            <form class="form-inline my-2 my-lg-0" method="get" action="/main">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="filter"
+                       value="${filter}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </#if>
         </ul>
 
         <div class="navbar-text mr-3">${name}</div>
