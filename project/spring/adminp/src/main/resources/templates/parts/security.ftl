@@ -9,6 +9,7 @@ known = Session.SPRING_SECURITY_CONTEXT??
     isAdmin = user.isAdmin()
     currentUserId = user.getId()
     userProjectsAsString = user.getUserProjectsAsString()
+    userProjects = user.getUserProjects()
     >
 <#else>
     <#assign

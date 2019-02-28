@@ -34,12 +34,13 @@ public class Task {
     public Task() {
     }
 
-    public Task(String text, String tag, User user, LocalDate date, User executor) {
+    public Task(String text, String tag, User user, LocalDate date, User executor, Project project) {
         this.text = text;
         this.tag = tag;
         this.author = user;
         this.date = date;
         this.executor = executor;
+        this.project = project;
     }
 
     public Project getProject() {

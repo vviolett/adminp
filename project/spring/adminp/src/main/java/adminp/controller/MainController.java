@@ -1,9 +1,11 @@
 package adminp.controller;
 
 import adminp.domain.Comment;
+import adminp.domain.Project;
 import adminp.domain.Task;
 import adminp.domain.User;
 import adminp.repos.CommentRepo;
+import adminp.repos.ProjectRepo;
 import adminp.repos.TaskRepo;
 import adminp.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -34,6 +37,8 @@ public class MainController {
     private UserRepo userRepo;
     @Autowired
     private CommentRepo commentRepo;
+    @Autowired
+    private ProjectRepo projectRepo;
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -71,13 +76,13 @@ public class MainController {
                        @PathVariable Integer projectId,
                        @RequestParam(required = false, defaultValue = "") String filter,
                        Model model) {
-        Iterable<Task> tasks = taskRepo.findAll();
+        List<Task> tasks = taskRepo.findByProjectId(projectId);
 
         User currentUser = userRepo.findByUsername(user.getUsername());
         if (filter != null && !filter.isEmpty()) {
-            tasks = taskRepo.findByTag(filter);
+           // tasks = taskRepo.findByTag(filter);
         } else {
-            tasks = taskRepo.findAll();
+           // tasks = taskRepo.findAll();
         }
 
         model.addAttribute("tasks", tasks);
@@ -89,22 +94,25 @@ public class MainController {
         return "main";
     }
 
-    @PostMapping("/main")
+    @PostMapping("/main/{projectId}")
     public String add(
             @AuthenticationPrincipal User user,
+            @PathVariable Integer projectId,
             @RequestParam String text,
             @RequestParam String tag,
             @RequestParam(name = "executor", required = false) Long executor,
             @RequestParam(name = "datepicker", required = false) String datepicker,
              Map<String, Object> model,
+            @RequestParam(required = false, defaultValue = "") String filter,
             @RequestParam(name = "file", required=false) MultipartFile file
     ) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate date = LocalDate.parse(datepicker, formatter);
 
         User ex = userRepo.getOne(executor);
+        Project project = projectRepo.findById(projectId);
 
-        Task task = new Task(text, tag, user, date, ex);
+        Task task = new Task(text, tag, user, date, ex, project);
 
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -126,6 +134,7 @@ public class MainController {
         Iterable<Task> tasks = taskRepo.findAll();
 
         model.put("tasks", tasks);
+        model.put("filter", filter);
 
         return "main";
     }

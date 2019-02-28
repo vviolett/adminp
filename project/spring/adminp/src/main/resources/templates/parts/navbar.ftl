@@ -25,7 +25,9 @@
                 ${userProjectsAsString}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    <a class="dropdown-item" href="#">Action</a>
+                    <#list userProjects as project>
+                        <a class="dropdown-item" href="/main/${project.id}">${project.text}</a>
+                    </#list>
                 </div>
             </li>
             <li class="nav-item">
