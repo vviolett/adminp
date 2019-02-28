@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Controller
+@Transactional
 public class MainController {
     @Autowired
     private TaskRepo taskRepo;
@@ -42,9 +44,13 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
+    @Transactional
+    public String main(@AuthenticationPrincipal User user,
+                       @RequestParam(required = false, defaultValue = "") String filter,
+                       Model model) {
         Iterable<Task> tasks = taskRepo.findAll();
 
+        User currentUser = userRepo.findByUsername(user.getUsername());
         if (filter != null && !filter.isEmpty()) {
             tasks = taskRepo.findByTag(filter);
         } else {
@@ -54,6 +60,31 @@ public class MainController {
         model.addAttribute("tasks", tasks);
         model.addAttribute("users", userRepo.findAll());
         model.addAttribute("filter", filter);
+
+        model.addAttribute("projects", currentUser.getUserProjects());
+
+        return "main";
+    }
+
+    @GetMapping("/main/{projectId}")
+    public String main(@AuthenticationPrincipal User user,
+                       @PathVariable Integer projectId,
+                       @RequestParam(required = false, defaultValue = "") String filter,
+                       Model model) {
+        Iterable<Task> tasks = taskRepo.findAll();
+
+        User currentUser = userRepo.findByUsername(user.getUsername());
+        if (filter != null && !filter.isEmpty()) {
+            tasks = taskRepo.findByTag(filter);
+        } else {
+            tasks = taskRepo.findAll();
+        }
+
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("filter", filter);
+
+        model.addAttribute("projects", currentUser.getUserProjects());
 
         return "main";
     }

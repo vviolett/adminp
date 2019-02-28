@@ -27,6 +27,10 @@ public class Task {
 
     private String filename;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
+    private Project project;
+
     public Task() {
     }
 
@@ -36,6 +40,14 @@ public class Task {
         this.author = user;
         this.date = date;
         this.executor = executor;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     public Set<Comment> getComments() {

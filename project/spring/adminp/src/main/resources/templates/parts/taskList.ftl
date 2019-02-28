@@ -9,9 +9,9 @@
         <div class="m-2">
             <span>${task.text}</span><br/>
             <i>${task.tag}</i>
-    <#if task.date??>
-            <i>${task.date}</i>
-    </#if>
+            <#if task.date??>
+                <i>${task.date}</i>
+            </#if>
             <#if task.executor??>
                 <i>${task.executor.username}</i>
             </#if>

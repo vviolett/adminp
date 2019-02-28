@@ -2,11 +2,14 @@ package adminp.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "usr")
@@ -26,8 +29,23 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Task> tasks;
+
+    @ManyToMany(fetch = FetchType.EAGER,
+            mappedBy="projectUsers",
+            cascade = CascadeType.ALL)
+    private Set<Project> userProjects = new HashSet<>();
+
+    @Transactional
+    public Set<Project> getUserProjects() {
+        return userProjects;
+    }
+
+    @Transactional
+    public String getUserProjectsAsString() {
+        return userProjects.stream().map(p -> p.getText()).toArray()[0].toString();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -35,6 +53,10 @@ public class User implements UserDetails {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id, user.id);
+    }
+
+    public void setUserProjects(Set<Project> userProjects) {
+        this.userProjects = userProjects;
     }
 
     @Override
@@ -134,5 +156,9 @@ public class User implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public Set<String> getProjects(){
+        return roles.stream().map(r -> r.name()).collect(Collectors.toSet());
     }
 }
