@@ -3,7 +3,9 @@
     <form method="post" enctype="multipart/form-data">
         <div class="card">
             <div class="card-header">
-                ProjName
+    <#if task.project??>
+            ${task.project.text}
+    </#if>
             </div>
             <br/>
             <div class="container">
@@ -23,8 +25,9 @@
                                       placeholder=${task.date}></i><br/>
                         </#if>
                         Executor
+                        <br/>
                         <#if task.executor??>
-                            <select name="executor" class="form-control" style="width: 280px;">
+                            <select name="executor" class="custom-select col-md-4" style="width: 560px;">
                                 <option value="" disabled selected>${task.executor.username}</option>
                                 <#if users??>
                                     <#list users as user>
