@@ -71,6 +71,11 @@ public class MainController {
         return "main";
     }
 
+    @GetMapping("/statistics")
+    public String statistics(Map<String, Object> model) {
+        return "statistics";
+    }
+
     @GetMapping("/main/{projectId}")
     public String main(@AuthenticationPrincipal User user,
                        @PathVariable Integer projectId,

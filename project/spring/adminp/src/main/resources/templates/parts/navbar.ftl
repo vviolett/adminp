@@ -39,6 +39,9 @@
                 <a class="nav-link" href="/user">User list</a>
             </li>
         </#if>
+            <li class="nav-item">
+                <a class="nav-link" href="/statistics">Statistics</a>
+            </li>
         <#if springMacroRequestContext.requestUri?contains("/main")>
             <form class="form-inline my-2 my-lg-0" method="get" action="/main">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="filter"
