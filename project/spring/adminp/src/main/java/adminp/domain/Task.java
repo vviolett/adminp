@@ -2,6 +2,9 @@ package adminp.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,9 +30,16 @@ public class Task {
 
     private String filename;
 
+    private LocalTime time;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @ElementCollection(targetClass = Status.class, fetch = FetchType.LAZY)
+    @CollectionTable(name = "task_status", joinColumns = @JoinColumn(name = "task_id"))
+    @Enumerated(EnumType.STRING)
+    private List<Status> statuses = new LinkedList<>();
 
     public Task() {
     }
@@ -41,6 +51,26 @@ public class Task {
         this.date = date;
         this.executor = executor;
         this.project = project;
+    }
+
+    public List<Status> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(List<Status> statuses) {
+        this.statuses = statuses;
+    }
+
+    public String getActualStatus(){
+        return statuses.get(statuses.size()-1).name();
+    }
+
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public Project getProject() {

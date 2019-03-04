@@ -34,7 +34,20 @@
                                         <option value="${user.id}">${user.username}</option>
                                     </#list>
                                 </#if>
-                            </select>
+                            </select><br/>
+                        </#if>
+                        <br/>
+                        Time
+                        <#if task.time??>
+                            <input type="text" class="form-control" name="time" placeholder=${task.time}>
+                        </#if>
+                        <br/>
+                        Status
+                        <br/>
+                        <#if task.statuses??>
+                            <p class="text-muted">
+                            ${task.getActualStatus()}
+                            </p>
                         </#if>
                     </div>
                 </div>

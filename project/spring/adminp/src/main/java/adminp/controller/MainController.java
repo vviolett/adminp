@@ -1,9 +1,6 @@
 package adminp.controller;
 
-import adminp.domain.Comment;
-import adminp.domain.Project;
-import adminp.domain.Task;
-import adminp.domain.User;
+import adminp.domain.*;
 import adminp.repos.CommentRepo;
 import adminp.repos.ProjectRepo;
 import adminp.repos.TaskRepo;
@@ -22,6 +19,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -118,6 +116,8 @@ public class MainController {
         Project project = projectRepo.findById(projectId);
 
         Task task = new Task(text, tag, user, date, ex, project);
+        task.setTime(LocalTime.of(0, 0, 0));
+        task.getStatuses().add(Status.ACTIVE);
 
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -178,6 +178,7 @@ public class MainController {
             @RequestParam("id") Integer taskId,
             @RequestParam("text") String text,
             @RequestParam("tag") String tag,
+            @RequestParam String time,
             @RequestParam(name = "executor", required = false) Long executor,
             @RequestParam(name = "datepicker", required = false) String datepicker,
             @RequestParam("file") MultipartFile file,
@@ -185,7 +186,11 @@ public class MainController {
             @RequestParam(required=false , value = "delete") String deleteFlag
     ) throws IOException {
         Task task = taskRepo.findById(taskId);
-
+        if(!time.equals("")) {
+            DateTimeFormatter formatter1 = DateTimeFormatter.ISO_LOCAL_TIME;
+            LocalTime time1 = LocalTime.parse(time, formatter1);
+            task.setTime(time1);
+        }
             if(saveFlag != null) {
                 if (!StringUtils.isEmpty(text)) {
                     task.setText(text);
