@@ -183,15 +183,24 @@ public class MainController {
             @RequestParam(name = "datepicker", required = false) String datepicker,
             @RequestParam("file") MultipartFile file,
             @RequestParam(required=false , value = "save") String saveFlag,
-            @RequestParam(required=false , value = "delete") String deleteFlag
+            @RequestParam(required=false , value = "delete") String deleteFlag,
+            @RequestParam(required=false , value = "work") String work,
+            @RequestParam(required=false , value = "resolve") String resolve
     ) throws IOException {
         Task task = taskRepo.findById(taskId);
-        if(!time.equals("")) {
-            DateTimeFormatter formatter1 = DateTimeFormatter.ISO_LOCAL_TIME;
-            LocalTime time1 = LocalTime.parse(time, formatter1);
-            task.setTime(time1);
+        if(work != null) {
+            task.getStatuses().add(Status.PROGRESS);
+        }
+        if(resolve != null) {
+            task.getStatuses().add(Status.RESOLVED);
         }
             if(saveFlag != null) {
+                if(!time.equals("")) {
+                    DateTimeFormatter formatter1 = DateTimeFormatter.ISO_LOCAL_TIME;
+                    LocalTime time1 = LocalTime.parse(time, formatter1);
+                    task.setTime(time1);
+                }
+
                 if (!StringUtils.isEmpty(text)) {
                     task.setText(text);
                 }
@@ -210,12 +219,11 @@ public class MainController {
                 }
 
                 saveFile(task, file);
-
-                taskRepo.save(task);
             } else if(deleteFlag != null){
                 taskRepo.delete(task);
                 return "redirect:/main";
             }
+        taskRepo.save(task);
 
         return "redirect:/tasks/" + task.getId();
     }

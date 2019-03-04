@@ -69,6 +69,8 @@
                 <div class="form-group">
                     <input name="save" value="save" type="submit" class="btn btn-primary"/>
                     <input name="delete" value="delete" type="submit" class="btn btn-primary"/>
+                    <input name="work" value="work" type="submit" class="btn btn-light"/>
+                    <input name="resolve" value="resolve" type="submit" class="btn btn-light"/>
                 </div>
             </div>
             <div class="card-footer text-muted">
