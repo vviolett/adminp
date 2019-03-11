@@ -23,12 +23,27 @@ public class Project {
     )
     private Set<User> projectUsers = new HashSet<>();
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Task> tasks;
+
     public Project(){
 
     }
 
     public Project(String text){
         this.text = text;
+    }
+
+    public Integer countTasks(){
+        return tasks.size();
+    }
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public Integer getId() {

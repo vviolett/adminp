@@ -70,7 +70,8 @@ public class MainController {
     }
 
     @GetMapping("/statistics")
-    public String statistics(Map<String, Object> model) {
+    public String statistics(@AuthenticationPrincipal User user,Model model) {
+        model.addAttribute("projects", user.getUserProjects());
         return "statistics";
     }
 

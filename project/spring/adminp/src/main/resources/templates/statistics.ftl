@@ -3,7 +3,7 @@
 <@c.page>
 <div class="row my-3">
     <div class="col">
-        <h4>Bootstrap 4 Chart.js - Line Chart</h4>
+        <h4>Распределение задач по проектам</h4>
     </div>
 </div>
 <div class="row my-2">
@@ -25,21 +25,14 @@
     /* large line chart */
     var chLines = document.getElementById("chLines");
     var chartData = {
-        labels: ["S", "M", "T", "W", "T", "F", "S"],
+        labels: [<#list projects as project>'${project.text}',</#list>],
         datasets: [{
-            data: [589, 445, 483, 503, 689, 692, 634],
-            backgroundColor: 'transparent',
-            borderColor: colors[0],
+            data: [<#list projects as project>${project.countTasks()},</#list>],
+            backgroundColor: colors[3],
+            borderColor: colors[1],
             borderWidth: 4,
-            pointBackgroundColor: colors[0]
-        },
-            {
-                data: [639, 465, 493, 478, 589, 632, 674],
-                backgroundColor: colors[3],
-                borderColor: colors[1],
-                borderWidth: 4,
-                pointBackgroundColor: colors[1]
-            }]
+            pointBackgroundColor: colors[1]
+        }]
     };
 
     if (chLines) {
