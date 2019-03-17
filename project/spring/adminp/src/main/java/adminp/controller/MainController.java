@@ -1,10 +1,7 @@
 package adminp.controller;
 
 import adminp.domain.*;
-import adminp.repos.CommentRepo;
-import adminp.repos.ProjectRepo;
-import adminp.repos.TaskRepo;
-import adminp.repos.UserRepo;
+import adminp.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -92,6 +89,7 @@ public class MainController {
         model.addAttribute("tasks", tasks);
         model.addAttribute("users", userRepo.findAll());
         model.addAttribute("filter", filter);
+        model.addAttribute("priorities", Priority.values());
 
         model.addAttribute("projects", currentUser.getUserProjects());
 
@@ -105,6 +103,7 @@ public class MainController {
             @RequestParam String text,
             @RequestParam String tag,
             @RequestParam(name = "executor", required = false) Long executor,
+            @RequestParam(name = "priority", required = false) String priority,
             @RequestParam(name = "datepicker", required = false) String datepicker,
              Map<String, Object> model,
             @RequestParam(required = false, defaultValue = "") String filter,
@@ -117,6 +116,7 @@ public class MainController {
         Project project = projectRepo.findById(projectId);
 
         Task task = new Task(text, tag, user, date, ex, project);
+        task.setPriority(Priority.valueOf(priority));
         task.setTime(LocalTime.of(0, 0, 0));
         task.getStatuses().add(Status.ACTIVE);
 
@@ -179,7 +179,7 @@ public class MainController {
             @RequestParam("id") Integer taskId,
             @RequestParam("text") String text,
             @RequestParam("tag") String tag,
-            @RequestParam String time,
+            @RequestParam(name = "time", required = false) String time,
             @RequestParam(name = "executor", required = false) Long executor,
             @RequestParam(name = "datepicker", required = false) String datepicker,
             @RequestParam("file") MultipartFile file,

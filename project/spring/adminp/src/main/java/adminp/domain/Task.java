@@ -41,6 +41,9 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private List<Status> statuses = new LinkedList<>();
 
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
     public Task() {
     }
 
@@ -51,6 +54,14 @@ public class Task {
         this.date = date;
         this.executor = executor;
         this.project = project;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 
     public List<Status> getStatuses() {

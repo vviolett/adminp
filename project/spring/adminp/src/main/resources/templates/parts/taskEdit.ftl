@@ -25,6 +25,13 @@
                 </#list>
             </#if>
             </select>
+                <select name="priority" class="custom-select col-md-2">
+                <#if priorities??>
+                    <#list priorities as priority>
+                        <option value="${priority}">${priority}</option>
+                    </#list>
+                </#if>
+             </select>
             </div>
             <input type="hidden" name="_csrf" value="${_csrf.token}" />
             <div class="form-group">
