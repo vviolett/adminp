@@ -32,10 +32,25 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Task> tasks;
 
+    @OneToMany(mappedBy = "executor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Task> tasksForExecution;
+
     @ManyToMany(fetch = FetchType.EAGER,
             mappedBy="projectUsers",
             cascade = CascadeType.ALL)
     private Set<Project> userProjects = new HashSet<>();
+
+    public Set<Task> getTasksForExecution() {
+        return tasksForExecution;
+    }
+
+    public void setTasksForExecution(Set<Task> tasksForExecution) {
+        this.tasksForExecution = tasksForExecution;
+    }
+
+    public Integer countTasksForExecution(){
+        return tasksForExecution.size();
+    }
 
     @Transactional
     public Set<Project> getUserProjects() {

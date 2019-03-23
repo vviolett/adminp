@@ -69,6 +69,7 @@ public class MainController {
     @GetMapping("/statistics")
     public String statistics(@AuthenticationPrincipal User user,Model model) {
         model.addAttribute("projects", user.getUserProjects());
+        model.addAttribute("users", userRepo.findAll());
         return "statistics";
     }
 

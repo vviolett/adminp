@@ -5,23 +5,51 @@
     <div class="col">
         <h4>Распределение задач по проектам</h4>
     </div>
+    <div class="col">
+        <h4>Распределение задач по сотрудникам</h4>
+    </div>
 </div>
 <div class="row my-2">
-    <div class="col-md-12">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <canvas id="chLines" height="100"></canvas>
+                <canvas id="chLines" width="800" height="450"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <canvas id="doughnut-chart" width="800" height="450"></canvas>
             </div>
         </div>
     </div>
 </div>
 </div>
 <script>
-    /* chart.js chart examples */
 
+    new Chart(document.getElementById("doughnut-chart"), {
+        type: 'doughnut',
+        data: {
+            labels: [<#list users as user>'${user.username}',</#list>],
+            datasets: [
+                {
+                    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#e37b00","#c0c403","#c44f63","#9126c4","#00c4c3"],
+                    data: [<#list users as user>${user.countTasksForExecution()},</#list>]
+                }
+            ]
+        },
+        options: {
+            title: {
+                display: false,
+                text: 'Predicted world population (millions) in 2050'
+            }
+        }
+    });
+
+    /* chart.js chart examples */
     // chart colors
     var colors = ['#007bff','#28a745','#333333','#c3e6cb','#dc3545','#6c757d'];
-
     /* large line chart */
     var chLines = document.getElementById("chLines");
     var chartData = {
@@ -83,6 +111,13 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-4 py-1">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="chDonut4"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script>
@@ -99,12 +134,12 @@
 
     // donut 1
     var chDonutData1 = {
-        labels: ['Bootstrap', 'Popper', 'Other'],
+        labels: [<#list users as user>'${user.username}',</#list>],
         datasets: [
             {
                 backgroundColor: colors.slice(0,3),
                 borderWidth: 0,
-                data: [74, 11, 40]
+                data: [<#list users as user>${user.countTasksForExecution()},</#list>]
             }
         ]
     };
@@ -157,5 +192,12 @@
             options: donutOptions
         });
     }
+
+    var chDonut4 = document.getElementById("chDonut4");
+    new Chart(chDonut4, {
+        type: 'bar',
+        data: chDonutData3,
+        options: donutOptions
+    });
 </script>
     </@c.page>
