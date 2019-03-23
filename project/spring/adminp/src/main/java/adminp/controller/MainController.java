@@ -169,6 +169,7 @@ public class MainController {
 
         model.addAttribute("task", taskRepo.findById(taskId));
         model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("tasks", taskRepo.findAll());
 
         return "parts/taskForm";
     }
@@ -186,9 +187,17 @@ public class MainController {
             @RequestParam(required=false , value = "save") String saveFlag,
             @RequestParam(required=false , value = "delete") String deleteFlag,
             @RequestParam(required=false , value = "work") String work,
-            @RequestParam(required=false , value = "resolve") String resolve
+            @RequestParam(required=false , value = "resolve") String resolve,
+            @RequestParam(name = "blocker", required = false) Integer blocker
     ) throws IOException {
         Task task = taskRepo.findById(taskId);
+
+        //список задач которые блокируют данную задачу
+        List<Task> blockers = task.getBlockerOf();
+        blockers.add(taskRepo.findById(blocker));
+
+        task.setBlockerOf(blockers);
+
         if(work != null) {
             task.getStatuses().add(Status.PROGRESS);
         }

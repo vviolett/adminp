@@ -71,6 +71,40 @@
                     <input name="delete" value="delete" type="submit" class="btn btn-primary"/>
                     <input name="work" value="work" type="submit" class="btn btn-light"/>
                     <input name="resolve" value="resolve" type="submit" class="btn btn-light"/>
+
+                    <select name="blocker" class="custom-select col-md-4" style="width: 560px;">
+                        <#if tasks??>
+                            <#list tasks as task>
+                                <option value="${task.id}">${task.id}</option>
+                            </#list>
+                        </#if>
+                    </select><br/>
+                    <#if task.getBlockerOf()??>
+                        Blocked by:
+                        <table class="table" style="width: 360px;">
+                            <tbody>
+
+                                <#list task.getBlockerOf() as blocker>
+                                <tr>
+                                    <td><a href="/tasks/${blocker.id}">${blocker.id}</a></td>
+                                </tr>
+                                </#list>
+
+                            </tbody>
+                        </table>
+                    </#if>
+                    <#if task.getBlockers()??>
+                        Blocks:
+                        <table class="table" style="width: 360px;">
+                            <tbody>
+                                <#list task.getBlockers() as blockTask>
+                                <tr>
+                                    <td><a href="/tasks/${blockTask.id}">${blockTask.id}</a></td>
+                                </tr>
+                                </#list>
+                            </tbody>
+                        </table>
+                    </#if>
                 </div>
             </div>
             <div class="card-footer text-muted">

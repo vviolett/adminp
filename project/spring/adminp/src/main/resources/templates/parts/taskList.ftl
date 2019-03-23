@@ -35,6 +35,9 @@
                         <a class="btn btn-default" href="/tasks/${task.id}" aria-label="Settings">
                             <i class="fa fa-cog" aria-hidden="true"></i>
                         </a>
+                        <#if task.isBlocker()>
+                            <i class="fa fa-ban" aria-hidden="true" style="color:#df4738"></i>
+                        </#if>
                         <#if task.priority?? && task.getPriority() == highPR>
                             <i class="fa fa-arrow-up" aria-hidden="true" style="color:#df4738"></i>
                         </#if>
@@ -80,6 +83,9 @@
                         <a class="btn btn-default" href="/tasks/${task.id}" aria-label="Settings">
                             <i class="fa fa-cog" aria-hidden="true"></i>
                         </a>
+                        <#if task.isBlocker()>
+                            <i class="fa fa-ban" aria-hidden="true" style="color:#df4738"></i>
+                        </#if>
                         <#if task.priority?? && task.getPriority() == highPR>
                             <i class="fa fa-arrow-up" aria-hidden="true" style="color:#df4738"></i>
                         </#if>
@@ -123,6 +129,9 @@
                     <a class="btn btn-default" href="/tasks/${task.id}" aria-label="Settings">
                         <i class="fa fa-cog" aria-hidden="true"></i>
                     </a>
+                    <#if task.isBlocker()>
+                        <i class="fa fa-ban" aria-hidden="true" style="color:#df4738"></i>
+                    </#if>
                     <#if task.priority?? && task.getPriority() == highPR>
                         <i class="fa fa-arrow-up" aria-hidden="true" style="color:#df4738"></i>
                     </#if>
